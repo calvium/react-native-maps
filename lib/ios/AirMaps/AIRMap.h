@@ -76,5 +76,6 @@ extern const NSInteger AIRMapMaxZoomLevel;
 
 - (AIRMapMarker*) markerAtPoint:(CGPoint)point;
 - (NSDictionary*) getMarkersFramesWithOnlyVisible:(BOOL)onlyVisible;
+- (void)setCameraBoundaryRegion:(MKCoordinateRegion)cameraCoordinateRegion animated:(BOOL)animated API_AVAILABLE(ios(13.0));
 
 @end

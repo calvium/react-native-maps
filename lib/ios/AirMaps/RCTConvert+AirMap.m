@@ -27,6 +27,27 @@
   };
 }
 
++ (MKMapCameraZoomRange*)MKMapCameraZoomRange:(id)json API_AVAILABLE(ios(13.0)){
+    json = [self NSDictionary:json];
+    return [RCTConvert MKMapCameraZoomRangeWithDefaults:json];
+}
+
++ (MKMapCameraZoomRange*)MKMapCameraZoomRangeWithDefaults:(id)json API_AVAILABLE(ios(13.0)){
+    json = [self NSDictionary:json];
+    MKMapCameraZoomRange* camera = nil;
+
+    if (json[@"maxCenterCoordinateDistance"] && json[@"minCenterCoordinateDistance"]) {
+        camera = [[MKMapCameraZoomRange alloc] initWithMinCenterCoordinateDistance:[self double:json[@"minCenterCoordinateDistance"]] maxCenterCoordinateDistance:[self double:json[@"maxCenterCoordinateDistance"]]];
+    }
+    if (json[@"minCenterCoordinateDistance"]) {
+        camera = [[MKMapCameraZoomRange alloc] initWithMinCenterCoordinateDistance:[self double:json[@"minCenterCoordinateDistance"]]];
+    }
+    if (json[@"maxCenterCoordinateDistance"]) {
+        camera = [[MKMapCameraZoomRange alloc] initWithMaxCenterCoordinateDistance:[self double:json[@"maxCenterCoordinateDistance"]]];
+    }
+    return camera;
+}
+
 + (MKMapCamera*)MKMapCamera:(id)json
 {
     json = [self NSDictionary:json];

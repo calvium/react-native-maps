@@ -13,6 +13,7 @@
 + (MKCoordinateRegion)MKCoordinateRegion:(id)json;
 + (MKMapCamera*)MKMapCamera:(id)json;
 + (MKMapCamera*)MKMapCameraWithDefaults:(id)json existingCamera:(MKMapCamera*)camera;
++ (MKMapCameraZoomRange*)MKMapCameraZoomRangeWithDefaults:(id)json API_AVAILABLE(ios(13.0));
 + (MKMapType)MKMapType:(id)json;
 
 @end

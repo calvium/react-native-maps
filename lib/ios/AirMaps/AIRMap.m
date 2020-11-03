@@ -262,13 +262,13 @@ const NSInteger AIRMapMaxZoomLevel = 20;
 
     CGPoint touchPoint = [self.calloutView convertPoint:point fromView:self];
     UIView *touchedView = [self.calloutView hitTest:touchPoint withEvent:event];
-    
+
     if (touchedView) {
         UIWindow* win = [[[UIApplication sharedApplication] windows] firstObject];
         AIRMapCalloutSubview* calloutSubview = nil;
         AIRMapCallout* callout = nil;
         AIRMapMarker* marker = nil;
-        
+
         UIView* tmp = touchedView;
         while (tmp && tmp != win && tmp != self.calloutView) {
             if ([tmp respondsToSelector:@selector(onPress)]) {
@@ -280,7 +280,7 @@ const NSInteger AIRMapMaxZoomLevel = 20;
             }
             tmp = tmp.superview;
         }
-        
+
         if (callout) {
             marker = [self markerForCallout:callout];
             if (marker) {
@@ -290,7 +290,7 @@ const NSInteger AIRMapMaxZoomLevel = 20;
                 }
             }
         }
-        
+
         return calloutSubview ? calloutSubview : touchedView;
     }
 
@@ -329,7 +329,7 @@ const NSInteger AIRMapMaxZoomLevel = 20;
 - (NSArray *)getMapBoundaries
 {
     MKMapRect mapRect = self.visibleMapRect;
-    
+
     CLLocationCoordinate2D northEast = MKCoordinateForMapPoint(MKMapPointMake(MKMapRectGetMaxX(mapRect), mapRect.origin.y));
     CLLocationCoordinate2D southWest = MKCoordinateForMapPoint(MKMapPointMake(mapRect.origin.x, MKMapRectGetMaxY(mapRect)));
 
@@ -664,6 +664,31 @@ const NSInteger AIRMapMaxZoomLevel = 20;
         compassButton = [self.subviews objectAtIndex:index];
         compassButton.frame = CGRectMake(compassButton.frame.origin.x + _compassOffset.x, compassButton.frame.origin.y + _compassOffset.y, compassButton.frame.size.width, compassButton.frame.size.height);
     }
+}
+
+- (void)setCameraBoundaryRegion:(MKCoordinateRegion)cameraCoordinateRegion animated:(BOOL)animated API_AVAILABLE(ios(13.0)){
+    // If location is invalid, abort
+    if (!CLLocationCoordinate2DIsValid(cameraCoordinateRegion.center)) {
+        return;
+    }
+
+    // If new span values are nil, abort
+    if (!cameraCoordinateRegion.span.latitudeDelta) {
+        return;
+    }
+
+    if (!cameraCoordinateRegion.span.longitudeDelta) {
+        return;
+    }
+
+    MKMapCameraBoundary* cameraBoundary = [[MKMapCameraBoundary alloc] initWithCoordinateRegion:cameraCoordinateRegion];
+    // Animate/move camera to new position
+    [super setCameraBoundary:cameraBoundary animated:animated];
+}
+
+
+- (void)setCameraZoomRange:(MKMapCameraZoomRange *)cameraZoomRange animated:(BOOL)animated {
+    [super setCameraZoomRange:cameraZoomRange animated:animated];
 }
 
 @end
