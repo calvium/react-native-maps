@@ -193,7 +193,7 @@ declare module "react-native-maps" {
     | "none"
     | "mutedStandard";
 
-  export interface ZoomRange {minCenterCoordinateDistance: number, maxCenterCoordinateDistance?: number }
+  export interface ZoomRange {minCenterCoordinateDistance?: number, maxCenterCoordinateDistance?: number }
 
   export interface MapViewProps extends ViewProperties {
     provider?: "google" | null;
@@ -267,8 +267,8 @@ declare module "react-native-maps" {
     minZoomLevel?: number;
     maxZoomLevel?: number;
     kmlSrc?: string;
-    cameraBoundaryRegion: Region;
-    zoomRange: ZoomRange
+    cameraBoundaryRegion?: Region;
+    zoomRange?: ZoomRange
   }
 
   export default class MapView extends React.Component<MapViewProps, any> {
